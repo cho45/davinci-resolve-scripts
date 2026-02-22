@@ -41,6 +41,16 @@ Junction を使用して、リポジトリ内のファイルを Resolve のシ�
 - **ドライブ跨ぎ対応**: シンボリックリンクを使用しているため、プロジェクトを D: ドライブに置き、Resolve の設定を C: ドライブに置くといった構成でも問題なく動作します。
 - **即時反映**: リンクを使用しているため、リポジトリ内のファイルを編集して保存するだけで、即座に Resolve 側に反映されます。
 - **AI 活用**: `Developer/` ディレクトリがリンクされているため、AI アシスタントに対して「`Developer/Scripting/README.txt` を参考にしてスクリプトを書いて」といった指示が容易になります。
+- **【重要】CLIからの直接実行・テスト**: Resolve が起動中であれば、GUIを使わずにコマンドラインから直接短いスクリプトを送り込んでテストやデバッグを実行し、結果（ログなど）を取得できます。
+  - 具体的なコマンド例は以下の通りです。AIエージェントに「以下のコマンド例を参考にシェルで実行してAPIの仕様を確かめて」と指示することで、確実な実装が可能になります。
+  - **Luaの実行例 (`fuscript.exe`)**:
+    ```powershell
+    & "C:\Program Files\Blackmagic Design\DaVinci Resolve\fuscript.exe" -x "local resolve = Resolve(); print(resolve:GetProjectManager():GetCurrentProject():GetName())"
+    ```
+  - **Pythonの実行例**:
+    ```powershell
+    $env:PYTHONPATH = "$env:PROGRAMDATA\Blackmagic Design\DaVinci Resolve\Support\Developer\Scripting\Modules\"; python -c "import DaVinciResolveScript as dvr_script; resolve = dvr_script.scriptapp('Resolve'); print(resolve.GetProjectManager().GetCurrentProject().GetName())"
+    ```
 - **ディレクトリ階層**: `src/Scripts/Utility/` に置いたスクリプトは Resolve のすべてのページで表示されます。特定のページでのみ使いたい場合は、それぞれのページ名フォルダに配置してください。
 
 ## アンインストール

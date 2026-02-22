@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BlackmagicDesign>
+    <Plugin>
+        <Id>com.mycompany.subtitleeditor</Id>
+        <Name>Subtitle Markdown Editor</Name>
+        <Version>1.0</Version>
+        <Description>Edit DaVinci Resolve Subtitles using Markdown</Description>
+        <FilePath>main.js</FilePath>
+    </Plugin>
+</BlackmagicDesign>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subtitle Markdown Editor</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #eeeeee;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 1.4em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #d0d0d0;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: #3a3a3a;
+            color: #ffffff;
+            border: 1px solid #555;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #505050;
+        }
+        button.primary {
+            background-color: #0078d7;
+            border-color: #005a9e;
+        }
+        button.primary:hover {
+            background-color: #005a9e;
+        }
+        #editor {
+            flex-grow: 1;
+            background-color: #252525;
+            color: #e0e0e0;
+            border: 1px solid #444;
+            padding: 15px;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-size: 14px;
+            resize: none;
+            outline: none;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        #status {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #aaaaaa;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Subtitle Markdown Editor</h1>
+    
+    <div class="controls">
+        <button id="btn-load">1. Load Subtitles from Timeline</button>
+        <button id="btn-apply" class="primary">2. Apply Changes to Timeline</button>
+    </div>
+
+    <textarea id="editor" placeholder="Subtitles will appear here in markdown format..."></textarea>
+    <div id="status">Ready. Select a track with subtitles.</div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

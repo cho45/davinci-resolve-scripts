@@ -1,15 +1,47 @@
--- DaVinci Resolve Minimum Script
--- UI、ダイアログ、イベントループを一切含みません。
--- 100% 安全にコンソールへ出力するだけのコードです。
-
 local resolve = Resolve()
-local pm = resolve:GetProjectManager()
-local proj = pm:GetCurrentProject()
+local fusion = resolve:Fusion()
+local ui = fusion.UIManager
+local dispatcher = bmd.UIDispatcher(ui)
 
-print("\n[SUCCESS] Script connection verified.")
-if proj then
-    print("Working on Project: " .. proj:GetName())
-else
-    print("Resolve is open (No project loaded).")
+local winID = "HelloWorldDialog"
+
+-- ウィンドウの定義
+local win = dispatcher:AddWindow({
+    ID = winID,
+    WindowTitle = "Hello World",
+    Geometry = { 200, 200, 300, 150 },
+}, ui:VGroup{
+    ui:Label{
+        ID = "MessageLabel",
+        Text = "Hello, world!",
+        Alignment = { AlignHCenter = true, AlignVCenter = true },
+    },
+    ui:HGroup{
+        Weight = 0,
+        ui:HGap(0, 1),
+        ui:Button{
+            ID = "CloseBtn",
+            Text = "Close",
+            Weight = 0,
+        },
+        ui:HGap(0, 1),
+    },
+})
+
+-- UIアイテムの取得（イベントバインドに必要）
+local itm = win:GetItems()
+
+-- イベントハンドラー
+win.On[winID].Close = function(ev)
+    dispatcher:ExitLoop()
 end
-print("No further actions being taken. Safe to continue.\n")
+
+win.On.CloseBtn.Clicked = function(ev)
+    dispatcher:ExitLoop()
+end
+
+-- UIの表示とループ実行
+win:Show()
+dispatcher:RunLoop()
+win:Hide()
+

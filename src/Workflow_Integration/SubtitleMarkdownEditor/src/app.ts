@@ -1,26 +1,35 @@
+declare const __BUILD_HASH__: string;
+
 document.addEventListener('DOMContentLoaded', () => {
-    const btnLoad = document.getElementById('btn-load');
-    const btnApply = document.getElementById('btn-apply');
-    const editor = document.getElementById('editor');
-    const status = document.getElementById('status');
+    const btnLoad = document.getElementById('btn-load') as HTMLButtonElement | null;
+    const btnApply = document.getElementById('btn-apply') as HTMLButtonElement | null;
+    const editor = document.getElementById('editor') as HTMLTextAreaElement | null;
+    const status = document.getElementById('status') as HTMLDivElement | null;
+    const buildHashEl = document.getElementById('build-hash') as HTMLDivElement | null;
+
+    if (!btnLoad || !btnApply || !editor || !status) return;
+
+    if (buildHashEl) {
+        buildHashEl.innerText = __BUILD_HASH__;
+    }
 
     let fps = 24;
 
-    function formatTimecode(frames, frameRate) {
+    function formatTimecode(frames: number, frameRate: number) {
         const timeSeconds = frames / frameRate;
         const h = Math.floor(timeSeconds / 3600);
         const m = Math.floor((timeSeconds % 3600) / 60);
         const s = Math.floor(timeSeconds % 60);
         const ms = Math.floor((timeSeconds - Math.floor(timeSeconds)) * 1000);
 
-        const pad = (num, size) => num.toString().padStart(size, '0');
+        const pad = (num: number, size: number) => num.toString().padStart(size, '0');
         return `${pad(h, 2)}:${pad(m, 2)}:${pad(s, 2)},${pad(ms, 3)}`;
     }
 
     btnLoad.addEventListener('click', async () => {
         status.innerText = "Loading subtitles...";
         try {
-            const data = await window.resolveAPI.getSubtitles();
+            const data = await (window as any).resolveAPI.getSubtitles();
             if (data.error) {
                 status.innerText = "Error: " + data.error;
                 return;
@@ -38,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const timelineStartFrame = data.timelineStartFrame || 0;
 
             let markdown = "";
-            data.subtitles.forEach((sub, index) => {
+            data.subtitles.forEach((sub: any, index: number) => {
                 // Subtract the timeline start frame to make it 0-based for SRT
                 const startTc = formatTimecode(sub.start - timelineStartFrame, fps);
                 const endTc = formatTimecode(sub.end - timelineStartFrame, fps);
@@ -47,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             editor.value = markdown;
             status.innerText = `Loaded ${data.subtitles.length} subtitles seamlessly.`;
-        } catch (err) {
+        } catch (err: any) {
             status.innerText = "Error: " + err.message;
         }
     });
@@ -83,14 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             console.log("SRT Length:", srtContent.length);
 
-            const res = await window.resolveAPI.applySubtitles(srtContent);
+            const res = await (window as any).resolveAPI.applySubtitles(srtContent);
             if (res.error) {
                 status.innerText = "Error applying: " + res.error;
             } else {
                 status.innerText = "Successfully appended modified subtitle track to timeline.";
             }
 
-        } catch (err) {
+        } catch (err: any) {
             status.innerText = "Error: " + err.message;
         }
     });

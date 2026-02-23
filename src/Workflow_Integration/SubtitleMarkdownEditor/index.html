@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Subtitle Markdown Editor</title>
@@ -15,17 +16,20 @@
             height: 100vh;
             box-sizing: border-box;
         }
+
         h1 {
             font-size: 1.4em;
             margin-top: 0;
             margin-bottom: 20px;
             color: #d0d0d0;
         }
+
         .controls {
             display: flex;
             gap: 10px;
             margin-bottom: 15px;
         }
+
         button {
             background-color: #3a3a3a;
             color: #ffffff;
@@ -36,16 +40,20 @@
             font-size: 14px;
             transition: background-color 0.2s;
         }
+
         button:hover {
             background-color: #505050;
         }
+
         button.primary {
             background-color: #0078d7;
             border-color: #005a9e;
         }
+
         button.primary:hover {
             background-color: #005a9e;
         }
+
         #editor {
             flex-grow: 1;
             background-color: #252525;
@@ -59,17 +67,30 @@
             white-space: pre-wrap;
             line-height: 1.5;
         }
+
         #status {
             margin-top: 10px;
             font-size: 0.9em;
             color: #aaaaaa;
         }
+
+        #build-hash {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.2);
+            pointer-events: none;
+            font-family: monospace;
+        }
     </style>
 </head>
+
 <body>
 
+    <div id="build-hash"></div>
     <h1>Subtitle Markdown Editor</h1>
-    
+
     <div class="controls">
         <button id="btn-load">1. Load Subtitles from Timeline</button>
         <button id="btn-apply" class="primary">2. Apply Changes to Timeline</button>
@@ -77,7 +98,7 @@
 
     <textarea id="editor" placeholder="Subtitles will appear here in markdown format..."></textarea>
     <div id="status">Ready. Select a track with subtitles.</div>
-
-    <script src="js/app.js"></script>
+    <script type="module" src="./src/app.ts"></script>
 </body>
+
 </html>

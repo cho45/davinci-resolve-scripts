@@ -4,7 +4,7 @@ const os = require('os');
 const fs = require('fs');
 
 // Load the integration bridge
-let WorkflowIntegration;
+let WorkflowIntegration: any;
 try {
     WorkflowIntegration = require('./WorkflowIntegration.node');
 } catch (e) {
@@ -12,8 +12,8 @@ try {
 }
 
 const PLUGIN_ID = 'com.mycompany.subtitleeditor';
-let mainWindow;
-let resolveObj = null;
+let mainWindow: any;
+let resolveObj: any = null;
 
 async function initResolve() {
     if (!resolveObj && WorkflowIntegration) {
@@ -79,12 +79,12 @@ ipcMain.handle('resolve:getSubtitles', async () => {
             timelineStartFrame,
             subtitles
         };
-    } catch (e) {
+    } catch (e: any) {
         return { error: e.toString() };
     }
 });
 
-ipcMain.handle('resolve:applySubtitles', async (event, srtContent) => {
+ipcMain.handle('resolve:applySubtitles', async (event: any, srtContent: string) => {
     try {
         const tempSrt = path.join(os.tmpdir(), `sub_${Date.now()}.srt`);
         fs.writeFileSync(tempSrt, srtContent, 'utf8');
@@ -114,13 +114,13 @@ ipcMain.handle('resolve:applySubtitles', async (event, srtContent) => {
         }, 5000);
 
         return { success: !!success };
-    } catch (e) {
+    } catch (e: any) {
         return { error: e.toString() };
     }
 });
 
 // Debug probe handler
-ipcMain.handle('resolve:probeObject', async (event, type) => {
+ipcMain.handle('resolve:probeObject', async (event: any, type: string) => {
     try {
         const timeline = await getTimeline();
         let target = null;
@@ -145,7 +145,7 @@ ipcMain.handle('resolve:probeObject', async (event, type) => {
             } catch (inner) { }
         }
         return { methods, properties };
-    } catch (e) {
+    } catch (e: any) {
         return { error: e.toString() };
     }
 });

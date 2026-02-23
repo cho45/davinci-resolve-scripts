@@ -4,7 +4,13 @@
     "description": "Subtitle Markdown Editor for DaVinci Resolve",
     "main": "main.js",
     "scripts": {
-        "start": "electron ."
+        "start": "electron .",
+        "build": "vite build",
+        "dev": "vite build --watch"
     },
-    "dependencies": {}
+    "devDependencies": {
+        "@types/node": "^25.3.0",
+        "typescript": "^5.9.3",
+        "vite": "^7.3.1"
+    }
 }

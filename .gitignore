@@ -8,7 +8,6 @@ Thumbs.db
 # Test files
 test*.srt
 test*.lua
-AGENTS.md
 *.node
 !src/**/WorkflowIntegration.node
 

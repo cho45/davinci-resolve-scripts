@@ -22,3 +22,21 @@ DaVinci Resolve のタイムライン上の字幕を Markdown 形式で編集で
 - **Electron**: UI と Resolve API へのブリッジ。
 - **WorkflowIntegration.node**: DaVinci Resolve 提供の Workflow Integration SDK。
 - **純粋な JS 実装**: `DeleteClips` と `AppendToTimeline` を組み合わせた高精度な配置ロジック。
+- **Vite + TypeScript ビルド**: Resolve の厳しいサンドボックス制限やドライブ間シンボリックリンク不可の問題を回避するため、ソースコードを直接 Resolve のディレクトリにビルド・出力するモダンなデプロイ環境を備えています。
+
+## 開発・デプロイ方法
+
+本プラグインは Vite で構築されています。`setup.ps1` を通したコピーやシンボリックリンクはお使いいただけません。
+
+1. Node.js がインストールされていることを確認します。
+2. コマンドプロンプト等でこのプラグインのディレクトリ（`src/Workflow_Integration/SubtitleMarkdownEditor/`）を開きます。
+3. パッケージをインストールします。
+   ```bash
+   npm install
+   ```
+4. ビルドを実行します。これにより、成果物が直接 DaVinci Resolve のプラグイン格納フォルダ (`C:\ProgramData\Blackmagic Design\...`) へデプロイされます。
+   ```bash
+   npm run build
+   ```
+   ※開発中は `npm run dev` と打つと、ファイルの変更を検知して自動でビルド＆デプロイが行われます。
+

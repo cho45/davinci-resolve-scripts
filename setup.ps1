@@ -44,10 +44,6 @@ $sdkDest   = Join-Path $PSScriptRoot "Developer"
 # 2. Scripts (Installation)
 $scriptsSourceBase = Join-Path $PSScriptRoot "src\Scripts"
 $scriptsDestBase   = Join-Path $resolveAppData "Fusion\Scripts"
-
-# 3. Workflow Integration (Installation)
-$pluginsSourceBase = Join-Path $PSScriptRoot "src\Workflow_Integration"
-$pluginsDestBase   = Join-Path $resolveAppData "Support\Workflow Integration Plugins"
 # --- Functions ---
 
 function Get-LinkTarget {
@@ -151,18 +147,6 @@ if ($Uninstall) {
 
     Remove-Link -Path $sdkDest      -ExpectedTarget $sdkSource      -Description "SDK_Reference"
 
-    if (Test-Path -LiteralPath $pluginsSourceBase) {
-        Write-Host "Uninstalling plugins..." -ForegroundColor Yellow
-        Get-ChildItem -Directory -Path $pluginsSourceBase | ForEach-Object {
-            $destPath = Join-Path $pluginsDestBase $_.Name
-            if (Test-Path -LiteralPath $destPath) {
-                # Remove physical directory structure instead of Link
-                Remove-Item -Path $destPath -Recurse -Force
-                Write-Host "Success: Plugin $($_.Name) removed." -ForegroundColor Green
-            }
-        }
-    }
-
     $scriptFolders = @("Comp", "Deliver", "Edit", "Color", "Utility")
     foreach ($folder in $scriptFolders) {
         $srcPath = Join-Path $scriptsSourceBase $folder
@@ -175,21 +159,6 @@ if ($Uninstall) {
     Write-Host "--- DaVinci Resolve Environment Setup (Install) ---" -ForegroundColor White -BackgroundColor Blue
 
     Create-Symlink -Source $sdkSource      -Destination $sdkDest      -Description "SDK_Reference"
-
-    if (Test-Path -LiteralPath $pluginsSourceBase) {
-        Write-Host "Installing plugins (Copying due to Electron sandbox restrictions)..." -ForegroundColor Yellow
-        Get-ChildItem -Directory -Path $pluginsSourceBase | ForEach-Object {
-            $srcPath = $_.FullName
-            $destPath = Join-Path $pluginsDestBase $_.Name
-            
-            # Use robocopy to mirror the directory. It safely skips locked files (like WorkflowIntegration.node)
-            # /MIR: Mirror a directory tree
-            # /NFL /NDL /NJH /NJS /nc /ns /np: Suppress most output for cleaner logs
-            cmd /c robocopy `"$srcPath`" `"$destPath`" /MIR /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
-            
-            Write-Host "Success: Plugin $($_.Name) synced." -ForegroundColor Green
-        }
-    }
 
     $scriptFolders = @("Comp", "Deliver", "Edit", "Color", "Utility")
     foreach ($folder in $scriptFolders) {

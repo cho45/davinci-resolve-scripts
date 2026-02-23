@@ -1,7 +1,7 @@
 # DaVinci Resolve Scripts
 
 DaVinci Resolve のスクリプトおよびプラグイン開発用リポジトリです。
-Python/Lua スクリプト群は Junction による直接リンクでコピー不要の開発環境を提供し、高度な Workflow Integration (Electron等) プラグイン群は Vite を用いた直接デプロイシステムを提供します。
+Python/Lua スクリプト群は シンボリックリンク による直接リンクでコピー不要の開発環境を提供し、高度な Workflow Integration (Electron等) プラグイン群は Vite を用いた直接デプロイシステムを提供します。
 
 ## ディレクトリ構成
 
@@ -11,7 +11,18 @@ Python/Lua スクリプト群は Junction による直接リンクでコピー�
   - `Workflow_Integration/`: ワークフロー統合プラグイン（Electron等）
 - `Developer/`: DaVinci Resolve 公式 SDK へのリンク（`setup.ps1` で作成）
   - API ドキュメントやサンプルコードが含まれており、LLM (AI) や開発者が参照するために利用します。
-- `setup.ps1`: 環境構築スクリプト（Junction の作成）
+- `setup.ps1`: 環境構築スクリプト（シンボリックリンクの作成）
+
+## 組み込みスクリプト・プラグイン
+
+### Utility スクリプト (`src/Scripts/Utility/`)
+- [subtitle_to_textplus.lua](src/Scripts/Utility/subtitle_to_textplus.lua): タイムライン上の字幕クリップを抽出し、装飾可能な `Text+` クリップの形式で任意のビデオトラックに一括変換・配置するスクリプト。
+- [textplus_to_subtitle.lua](src/Scripts/Utility/textplus_to_subtitle.lua): `Text+` クリップ群からテキストとタイムコードを抽出し、SRT フォーマットでファイル出力、または字幕トラックへ書き戻すスクリプト。
+- [youtube_chapter.lua](src/Scripts/Utility/youtube_chapter.lua): タイムラインのマーカー情報を抽出し、YouTube 自動チャプター用のテキストをクリップボードにコピーするスクリプト。
+- [hello_world.lua](src/Scripts/Utility/hello_world.lua): ネイティブ GUI (Fusion UI) のテスト用スクリプト。
+
+### Workflow Integration プラグイン
+- [SubtitleMarkdownEditor](src/Workflow_Integration/SubtitleMarkdownEditor/README.md): タイムラインの字幕を Markdown 形式で一覧表示・編集し、一括でタイムラインへ同期・反映できる高度なプラグイン。
 
 ## セットアップ
 
@@ -30,7 +41,7 @@ Python/Lua スクリプト群は Junction による直接リンクでコピー�
 2. **スクリプトのリンク**: `src/Scripts` 以下の各機能フォルダ（`Utility`, `Edit`など）を Resolve の該当ページ用フォルダ内に `MyScripts` という名前でそれぞれ個別にシンボリックリンクします。
 
 ※ **プラグイン（Workflow Integration）について**:
-DaVinci Resolve の Workflow Integration ではジャンクション（シンボリックリンク）を介したファイルロードが厳格にアクセス制限され、プラグインが正常に動作しない仕様となっています。
+DaVinci Resolve の Workflow Integration ではシンボリックリンクを介したファイルロードが厳格にアクセス制限され、プラグインが正常に動作しない仕様となっています。
 そのため、`src/Workflow_Integration/` 内のプラグイン（例: `SubtitleMarkdownEditor`）はリンクを作成せず、個別の Vite ビルドシステムを用いて DaVinci Resolve の `%PROGRAMDATA%` ディレクトリへ直接ビルド出力します（詳しくは各プラグインの `README.md` をご覧ください）。
 
 ### 2. 反映の確認

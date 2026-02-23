@@ -1,7 +1,7 @@
 # DaVinci Resolve Scripts
 
 DaVinci Resolve のスクリプトおよびプラグイン開発用リポジトリです。
-Junction を使用して、リポジトリ内のファイルを Resolve のシステムディレクトリに直接リンクさせることで、コピー不要の効率的な開発環境を提供します。
+Python/Lua スクリプト群は Junction による直接リンクでコピー不要の開発環境を提供し、高度な Workflow Integration (Electron等) プラグイン群は Vite を用いた直接デプロイシステムを提供します。
 
 ## ディレクトリ構成
 
@@ -28,13 +28,15 @@ Junction を使用して、リポジトリ内のファイルを Resolve のシ�
 このスクリプトを実行すると、以下の処理が自動で行われます：
 1. **SDK 参照の作成**: 公式の `Developer` フォルダをリポジトリ内にシンボリックリンクします。
 2. **スクリプトのリンク**: `src/Scripts` 以下の各機能フォルダ（`Utility`, `Edit`など）を Resolve の該当ページ用フォルダ内に `MyScripts` という名前でそれぞれ個別にシンボリックリンクします。
-3. **プラグインのリンク**: `src/Workflow_Integration` を Resolve のプラグインフォルダに `MyPlugins` という名前でシンボリックリンクします。
+
+※ **プラグイン（Workflow Integration）について**:
+DaVinci Resolve の Workflow Integration ではジャンクション（シンボリックリンク）を介したファイルロードが厳格にアクセス制限され、プラグインが正常に動作しない仕様となっています。
+そのため、`src/Workflow_Integration/` 内のプラグイン（例: `SubtitleMarkdownEditor`）はリンクを作成せず、個別の Vite ビルドシステムを用いて DaVinci Resolve の `%PROGRAMDATA%` ディレクトリへ直接ビルド出力します（詳しくは各プラグインの `README.md` をご覧ください）。
 
 ### 2. 反映の確認
 
 1. DaVinci Resolve を起動します。
 2. **スクリプト**: メニューの `Workspace` > `Scripts` > `MyScripts` 内に、スクリプトが表示されます。
-3. **ワークフロー統合**: メニューの `Workspace` > `Workflow Integrations` > `MyPlugins` 内にプラグインが表示されます。
 
 ## 開発のヒント
 
